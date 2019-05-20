@@ -12,7 +12,7 @@ fn bezout_coeffs(a: &BigInt, b: &BigInt) -> (BigInt, BigInt) {
 	let mut r = b.clone();
 	let mut old_r = a.clone();
 
-	while &r != &0.to_bigint().unwrap() {
+	while r != 0.to_bigint().unwrap() {
 		let quotient = &old_r / &r;
 
 		let rt = r.clone();
@@ -24,10 +24,10 @@ fn bezout_coeffs(a: &BigInt, b: &BigInt) -> (BigInt, BigInt) {
 		old_s = st;
 	}
 
-	if b != &0.to_bigint().unwrap() {
-		(old_s.clone(), (old_r - &old_s * a) / b)
-	} else {
+	if b == &0.to_bigint().unwrap() {
 		(old_s, 0.to_bigint().unwrap())
+	} else {
+		(old_s.clone(), (old_r - &old_s * a) / b)
 	}
 }
 
@@ -59,10 +59,10 @@ where
 	Vu: std::str::FromStr,
 	<Vu as std::str::FromStr>::Err: std::fmt::Debug,
 {
-	s.split(",").map(|x| x.parse::<Vu>().unwrap()).collect()
+	s.split(',').map(|x| x.parse::<Vu>().unwrap()).collect()
 }
 
-pub fn prove_solution(s: &BigInt, moduli: &Vec<BigInt>, congruents: &Vec<BigInt>) {
+pub fn prove_solution(s: &BigInt, moduli: &[BigInt], congruents: &[BigInt]) {
 	println!("For the skeptics, proving that {} is a solution:", s);
 
 	for (modulus, congruent) in moduli.iter().zip(congruents) {
@@ -75,7 +75,7 @@ pub fn prove_solution(s: &BigInt, moduli: &Vec<BigInt>, congruents: &Vec<BigInt>
 }
 
 pub fn gate_in_mod(s: &BigInt, modulus: &BigInt) -> BigInt {
-	if s < &0.to_bigint().unwrap() {
+	if *s < 0.to_bigint().unwrap() {
 		(s + modulus * (((0.to_bigint().unwrap() - s).abs() / modulus) + 1)) % modulus
 	} else if s >= modulus {
 		s % modulus

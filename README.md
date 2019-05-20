@@ -1,5 +1,14 @@
 # Proof of concept CRT Implementation
 
+## Setup
+
+You'll need the following:
+
+- Rust (nightly or stable should be fine)
+- Absolutely no fear of large prime numbers
+
+## Examples
+
 Note well that this does not scale to ridiculous extent.
 
 ```console
